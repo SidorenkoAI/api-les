@@ -1,0 +1,10 @@
+{
+  'name': 'Комета-Х',
+  "type": "ice",
+  "gravity": 0.3,
+  "has_water": True,
+  "moons": ["Хвост", "Пыль",],
+  // открыта только вчера!
+  population: 0,
+  "discovered": "2099-12-31",
+}
