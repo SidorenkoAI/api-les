@@ -1,0 +1,669 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Ровер на Барханье</title>
+<!--
+  Исходник презентации «Ровер на Барханье» для учеников. PDF собирается так (из корня репозитория):
+  "C:\Program Files\Google\Chrome\Application\chrome.exe" --headless=new --no-pdf-header-footer
+      --virtual-time-budget=5000 --print-to-pdf="lessons\rover\Ровер на Барханье.pdf" lessons\rover\presentation.html
+  Карту, места страниц и пароль здесь специально не показываем — их ученики находят сами.
+-->
+<style>
+  @page { size: 960px 540px; margin: 0; }
+  :root {
+    --bg: #0d1226; --card: #18203d; --card2: #1f2950; --line: #2b3561; --text: #eef1ff; --muted: #9aa3c7;
+    --gold: #ffd36b; --mint: #6be3a0; --coral: #ff8a65; --violet: #9b8cff; --sky: #6cc6ff;
+    --sand: #d3ad6f; --sand2: #c39a5b; --rock: #5d4a3a; --trap: #8c6a2c;
+    --display: "Bahnschrift", "Segoe UI Variable Display", sans-serif;
+    --body: "Segoe UI Variable Text", "Segoe UI", sans-serif;
+    --mono: "Cascadia Code", "Consolas", monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #05070f; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: var(--body); color: var(--text); }
+  .slide {
+    width: 960px; height: 540px; position: relative; overflow: hidden; break-after: page;
+    padding: 44px 56px; display: flex; flex-direction: column;
+    background:
+      radial-gradient(1.4px 1.4px at 8% 14%, #fff9 50%, transparent 51%),
+      radial-gradient(1px 1px at 23% 78%, #fff7 50%, transparent 51%),
+      radial-gradient(1.6px 1.6px at 41% 9%, #fff8 50%, transparent 51%),
+      radial-gradient(1px 1px at 57% 88%, #fff6 50%, transparent 51%),
+      radial-gradient(1.3px 1.3px at 71% 22%, #fff8 50%, transparent 51%),
+      radial-gradient(1px 1px at 86% 64%, #fff7 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 94% 8%, #fff8 50%, transparent 51%),
+      radial-gradient(1px 1px at 4% 52%, #fff6 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 33% 46%, #fff4 50%, transparent 51%),
+      radial-gradient(900px 500px at 110% 120%, #2a1d3d 0%, transparent 60%),
+      var(--bg);
+  }
+  .slide:last-child { break-after: auto; }
+  .foot { position: absolute; left: 56px; bottom: 20px; font-size: 11px; color: #6b749c; letter-spacing: .3px; }
+  .num { position: absolute; right: 56px; bottom: 20px; font-size: 11px; color: #6b749c; }
+  .kicker { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: 2.4px; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: 66px; line-height: .98; letter-spacing: -.5px; }
+  h2 { font-family: var(--display); font-weight: 700; font-size: 40px; line-height: 1.05; letter-spacing: -.3px; margin-bottom: 14px; }
+  h3 { font-family: var(--display); font-weight: 700; font-size: 19px; margin-bottom: 4px; }
+  .lead { font-size: 18px; line-height: 1.42; color: #d6dbf5; }
+  .muted { color: var(--muted); }
+  .gold { color: var(--gold); } .mint { color: var(--mint); } .coral { color: var(--coral); } .violet { color: var(--violet); } .sky { color: var(--sky); }
+  .row { display: flex; gap: 22px; }
+  .col { display: flex; flex-direction: column; gap: 12px; }
+  .grow { flex: 1 1 0; min-width: 0; }
+  .card { background: var(--card); border-radius: 14px; padding: 14px 16px; }
+  .card.edge { border-left: 4px solid var(--gold); border-radius: 4px 14px 14px 4px; }
+  .card p { font-size: 14.5px; line-height: 1.4; color: #cfd5f2; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-family: var(--mono); font-size: 13px; padding: 5px 10px; border-radius: 7px; background: #15394a; color: #8ee8ff; }
+  .chip.g { background: #3a3315; color: var(--gold); } .chip.m { background: #163d2e; color: var(--mint); }
+  .chip.c { background: #43231c; color: var(--coral); } .chip.v { background: #2a2552; color: #c3baff; }
+  code, .mono { font-family: var(--mono); }
+  .inl { font-family: var(--mono); font-size: .92em; background: #232d58; color: #bfe9ff; padding: 1px 6px; border-radius: 5px; }
+  pre.code {
+    font-family: var(--mono); font-size: 13.5px; line-height: 1.5; background: #0a0e1f; border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 16px; color: #dfe5ff; white-space: pre;
+  }
+  pre.code .k { color: #ff9ad5; } pre.code .s { color: #a5e88f; } pre.code .n { color: #ffcf7a; }
+  pre.code .f { color: #7cc8ff; } pre.code .c { color: #6f7aa8; font-style: italic; } pre.code .b { color: #c3baff; }
+  pre.json { font-size: 13px; }
+  pre.json .key { color: #7cc8ff; } pre.json .str { color: #a5e88f; } pre.json .num { color: #ffcf7a; position: static; font-size: inherit; }
+  pre.json .bool { color: #ff9ad5; }
+  .tag { display: inline-block; font-family: var(--mono); font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-right: 6px; }
+  .GET { background: #163d2e; color: var(--mint); } .POST { background: #3a3315; color: var(--gold); }
+  .big-emoji { font-size: 34px; line-height: 1; }
+
+  /* --- клеточная карта --- */
+  .grid { display: grid; gap: 2px; padding: 6px; background: #070a17; border-radius: 12px; width: max-content; position: relative; }
+  .t { width: var(--c, 34px); height: var(--c, 34px); border-radius: 5px; display: grid; place-items: center; position: relative;
+       font-size: calc(var(--c, 34px) * .52); line-height: 1; }
+  .t.sand { background: var(--sand); } .t.rock { background: var(--rock); box-shadow: inset 0 -4px 0 #4a3a2d; }
+  .t.trap { background: repeating-radial-gradient(circle at 50% 50%, #8c6a2c 0 3px, #6b4f1e 3px 6px); }
+  .t.fog { background: #131a33; }
+  .t.door { background: var(--rock); }
+  .t.path::after { content: ""; width: 26%; height: 26%; border-radius: 50%; background: #fff8; }
+  .t.target { box-shadow: inset 0 0 0 3px var(--gold); }
+  .t.hot { box-shadow: inset 0 0 0 3px var(--coral); }
+  .t svg { width: 92%; height: 92%; }
+  .ax { font-family: var(--mono); font-size: 11px; color: var(--muted); display: grid; place-items: center; }
+
+  .legend-tile { display: flex; gap: 12px; align-items: center; background: var(--card); border-radius: 12px; padding: 10px 12px; }
+  .legend-tile .t { --c: 44px; flex: 0 0 auto; }
+  .legend-tile b { font-family: var(--display); font-size: 17px; }
+  .legend-tile .api { font-family: var(--mono); font-size: 12px; color: var(--sky); margin-left: 6px; }
+  .legend-tile p { font-size: 13px; color: #c3c9e8; line-height: 1.3; margin-top: 2px; }
+
+  .step { display: flex; gap: 14px; align-items: flex-start; }
+  .step .n { flex: 0 0 46px; height: 46px; border-radius: 12px; background: var(--gold); color: #2b2100; font-family: var(--display);
+             font-weight: 700; font-size: 26px; display: grid; place-items: center; }
+  .resp { background: var(--card); border-radius: 12px; padding: 10px 14px; font-size: 14px; line-height: 1.35; }
+  .resp .lbl { font-family: var(--display); font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  table.api { border-collapse: separate; border-spacing: 0 7px; width: 100%; }
+  table.api td { background: var(--card); padding: 10px 14px; font-size: 15px; }
+  table.api td:first-child { border-radius: 10px 0 0 10px; white-space: nowrap; font-family: var(--mono); font-size: 14px; }
+  table.api td:last-child { border-radius: 0 10px 10px 0; color: #cfd5f2; }
+  .pagecard { width: 48px; height: 62px; border-radius: 8px; background: #f1e3c0; color: #4a3720; display: flex; flex-direction: column;
+              align-items: center; justify-content: center; font-family: var(--display); font-weight: 700; box-shadow: 0 4px 0 #b89b62;
+              transform: rotate(var(--r, 0deg)); }
+  .pagecard small { font-size: 11px; font-weight: 600; opacity: .7; }
+  .pagecard span { font-size: 26px; }
+  .letter { width: 30px; height: 40px; border-radius: 8px; background: var(--card2); display: grid; place-items: center;
+            font-family: var(--display); font-weight: 700; font-size: 20px; color: var(--gold); }
+  .letter.q { color: #6b749c; }
+  .arrow { font-size: 30px; color: var(--gold); font-family: var(--display); }
+  .ach { display: flex; gap: 12px; align-items: center; background: var(--card); border-radius: 12px; padding: 12px 14px; }
+  .ach .i { font-size: 32px; }
+  .ach b { font-family: var(--display); font-size: 16px; }
+  .ach p { font-size: 13px; color: var(--muted); }
+  .level { border-radius: 14px; padding: 14px 16px; background: var(--card); }
+  .level h3 { display: flex; align-items: center; gap: 8px; }
+  .level ul { list-style: none; margin-top: 8px; display: flex; flex-direction: column; gap: 7px; }
+  .level li { font-size: 14.5px; line-height: 1.3; color: #d6dbf5; }
+  .level li b { color: var(--text); }
+  .level li span { color: var(--muted); font-size: 13px; }
+  .bubble { background: #f4f6ff; color: #1b2040; border-radius: 14px; padding: 10px 14px; font-size: 14.5px; line-height: 1.35; position: relative; }
+  .bubble::after { content: ""; position: absolute; left: 22px; bottom: -8px; border: 8px solid transparent; border-top-color: #f4f6ff; border-bottom: 0; }
+</style>
+</head>
+<body>
+
+<!-- Рисунки: ровер и прочее — один раз, дальше <use> -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="rover" viewBox="0 0 120 96">
+      <line x1="80" y1="34" x2="92" y2="10" stroke="#cfd6f5" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="93" cy="9" r="6" fill="#ff8a65"/>
+      <rect x="18" y="16" width="44" height="14" rx="3" fill="#6cc6ff" stroke="#2f6d9c" stroke-width="2"/>
+      <line x1="33" y1="16" x2="33" y2="30" stroke="#2f6d9c" stroke-width="2"/><line x1="47" y1="16" x2="47" y2="30" stroke="#2f6d9c" stroke-width="2"/>
+      <rect x="38" y="30" width="4" height="8" fill="#cfd6f5"/>
+      <rect x="10" y="36" width="96" height="30" rx="9" fill="#ffd36b" stroke="#b8902e" stroke-width="3"/>
+      <rect x="74" y="42" width="22" height="14" rx="4" fill="#2b3561"/>
+      <circle cx="85" cy="49" r="4" fill="#6be3a0"/>
+      <rect x="20" y="46" width="40" height="5" rx="2.5" fill="#b8902e"/>
+      <g fill="#2b2f45" stroke="#0d1226" stroke-width="3">
+        <circle cx="24" cy="76" r="13"/><circle cx="58" cy="76" r="13"/><circle cx="92" cy="76" r="13"/>
+      </g>
+      <g fill="#9aa3c7"><circle cx="24" cy="76" r="4.5"/><circle cx="58" cy="76" r="4.5"/><circle cx="92" cy="76" r="4.5"/></g>
+    </symbol>
+    <radialGradient id="pl" cx="35%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#ffd99a"/><stop offset=".55" stop-color="#e0a35a"/><stop offset="1" stop-color="#8a4f2a"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<!-- 1. Обложка -->
+<section class="slide">
+  <svg style="position:absolute; right:-70px; top:40px" width="520" height="520" viewBox="0 0 520 520">
+    <circle cx="260" cy="260" r="235" fill="#ffd36b" opacity=".07"/>
+    <circle cx="260" cy="260" r="200" fill="url(#pl)"/>
+    <path d="M70 230 C150 200 220 250 300 225 S430 200 455 220" stroke="#b9773d" stroke-width="10" fill="none" opacity=".55"/>
+    <path d="M80 300 C170 270 230 320 320 295 S420 275 452 290" stroke="#b9773d" stroke-width="8" fill="none" opacity=".45"/>
+    <path d="M110 365 C180 345 250 380 330 360 S410 345 420 355" stroke="#9c5f2f" stroke-width="7" fill="none" opacity=".4"/>
+    <circle cx="190" cy="160" r="22" fill="#b9773d" opacity=".5"/><circle cx="330" cy="140" r="12" fill="#b9773d" opacity=".5"/>
+    <circle cx="350" cy="390" r="16" fill="#9c5f2f" opacity=".45"/>
+    <use href="#rover" x="150" y="-6" width="150" height="120"/>
+  </svg>
+  <div style="position:absolute; left:470px; top:70px; width:14px; height:14px; border-radius:50%; background:var(--coral)"></div>
+  <div style="position:absolute; left:860px; top:44px; width:22px; height:22px; border-radius:50%; background:var(--mint)"></div>
+  <div style="margin-top:96px; max-width:470px">
+    <div class="kicker">Космопорт · урок-игра · Python</div>
+    <h1>Ровер на<br><span class="gold">Барханье</span></h1>
+    <p class="lead" style="margin-top:18px; font-size:20px">Капитан пропал на пустынной планете. Его ровер ждёт на базе — и теперь он твой. Найди капитана, управляя ровером кодом.</p>
+    <div class="chips" style="margin-top:22px">
+      <span class="chip">GET</span><span class="chip g">POST</span><span class="chip m">for · while</span>
+      <span class="chip v">функции</span><span class="chip c">рекурсия</span>
+    </div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div>
+</section>
+
+<!-- 2. Что случилось -->
+<section class="slide">
+  <div class="kicker">Сюжет</div>
+  <h2>Что случилось</h2>
+  <div class="row" style="flex:1">
+    <div class="col grow" style="gap:14px">
+      <p class="lead">Капитан станции «Космопорт» улетел на планету <b class="gold">Барханья</b> — песок до горизонта. И пропал.</p>
+      <p class="lead">Через зонд пришло одно слово, спрятанное в пикселях: <b class="coral">ПОМОГИ</b>.</p>
+      <p class="lead">ИИ станции СТАНИСЛАВ спасателей не отправит. Зато на базе остался <b>ровер капитана</b> с ключом в зажигании.</p>
+      <div class="card edge" style="margin-top:4px"><p><b class="gold">Ты — оператор ровера.</b> У каждого в классе свой ровер, а планета одна на всех.</p></div>
+    </div>
+    <div class="col" style="width:380px; gap:10px">
+      <div class="bubble">«Ваш запрос очень важен для нас. Нет.»</div>
+      <div style="font-size:13px; color:var(--muted); margin:2px 0 4px 6px">🤖 СТАНИСЛАВ, ИИ станции</div>
+      <div class="card" style="display:flex; gap:12px; align-items:center"><span class="big-emoji">🧑‍🚀</span><p><b>Капитан</b> — пропал, но оставил дневник. Ветер разнёс его страницы по пустыне.</p></div>
+      <div class="card" style="display:flex; gap:12px; align-items:center"><span class="big-emoji">📋</span><p><b>Форма-27Б</b> — робот-бюрократ. «Без пароля не положено. Даже вам».</p></div>
+      <div class="card" style="display:flex; gap:12px; align-items:center"><span class="big-emoji">🦊</span><p><b>Шнырь</b> — контрабандист. Продаёт «точные карты». Не покупай.</p></div>
+    </div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">2</div>
+</section>
+
+<!-- 3. Миссия -->
+<section class="slide">
+  <div class="kicker">К чему стремиться</div>
+  <h2>Твоя миссия</h2>
+  <div class="row" style="gap:18px; margin-top:6px">
+    <div class="card grow step"><div class="n">1</div><div><h3>Найди страницы</h3><p>По пустыне разбросаны <b class="gold">10 страниц</b> дневника капитана. Ровер подбирает их сам, когда заезжает на клетку.</p><div class="big-emoji" style="margin-top:10px">📜</div></div></div>
+    <div class="card grow step"><div class="n">2</div><div><h3>Сложи пароль</h3><p>На полях каждой страницы — <b class="gold">одна буква</b>. По порядку номеров страниц они складываются в слово.</p><div class="big-emoji" style="margin-top:10px">🔤</div></div></div>
+    <div class="card grow step"><div class="n">3</div><div><h3>Открой пещеру</h3><p>Где-то на карте — <b class="gold">дверь пещеры</b>. Подъедь вплотную и скажи пароль. Что внутри — увидишь сам.</p><div class="big-emoji" style="margin-top:10px">🚪</div></div></div>
+  </div>
+  <div class="row" style="margin-top:18px; gap:18px">
+    <div class="card grow" style="display:flex; gap:12px; align-items:center"><span class="big-emoji">💎</span><p><b>Бонус:</b> собери кристаллы. Их на планете 10.</p></div>
+    <div class="card grow" style="display:flex; gap:12px; align-items:center"><span class="big-emoji">🗺️</span><p><b>Цель класса:</b> открыть всю карту. Туман рассеивается для всех сразу.</p></div>
+    <div class="card grow" style="display:flex; gap:12px; align-items:center"><span class="big-emoji">🏅</span><p><b>Ачивки:</b> 4 новые награды за ровер.</p></div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">3</div>
+</section>
+
+<!-- 4. Карта и координаты -->
+<section class="slide">
+  <div class="kicker">Как устроена планета</div>
+  <h2>Карта и координаты</h2>
+  <div class="row" style="flex:1; align-items:flex-start">
+    <div class="col grow" style="gap:12px">
+      <p class="lead">Планета — это <b>клетки</b>, как тетрадь в клетку. Каждая клетка — пара чисел <span class="inl">(x, y)</span>.</p>
+      <div class="card"><p><b class="sky">x</b> растёт <b>на восток</b> → (вправо)<br><b class="mint">y</b> растёт <b>на север</b> ↑ (вверх)</p></div>
+      <div class="card"><p>🏠 <b>База</b> — клетка <span class="inl">(0, 0)</span> в юго-западном углу. Отсюда ровер стартует.</p></div>
+      <div class="card"><p>☁️ Сначала вся карта в <b>тумане</b>. Что вокруг — узнаёшь только сканером.</p></div>
+      <p style="font-size:14px; color:var(--muted)">Как на графике в математике: вправо и вверх — больше.</p>
+    </div>
+    <div style="display:flex; gap:6px; align-items:flex-start">
+      <div id="g-coords"></div>
+    </div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">4</div>
+</section>
+
+<!-- 5. Что на клетках -->
+<section class="slide">
+  <div class="kicker">Легенда</div>
+  <h2>Что бывает на клетках</h2>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px 16px">
+    <div class="legend-tile"><div class="t sand"></div><div><b>Песок</b><span class="api">sand</span><p>Едь спокойно</p></div></div>
+    <div class="legend-tile"><div class="t rock"></div><div><b>Скала</b><span class="api">rock</span><p>Не проехать — ровер стоит на месте</p></div></div>
+    <div class="legend-tile"><div class="t trap"></div><div><b class="coral">Зыбучий песок</b><span class="api">trap</span><p>Авария! Эвакуатор увезёт ровер на базу</p></div></div>
+    <div class="legend-tile"><div class="t sand">💎</div><div><b>Кристалл</b><span class="api">crystal</span><p>Ровер подбирает сам, когда заезжает</p></div></div>
+    <div class="legend-tile"><div class="t sand">📜</div><div><b class="gold">Страница дневника</b><span class="api">page</span><p>Подбирается сама. На полях — буква пароля</p></div></div>
+    <div class="legend-tile"><div class="t sand">🏠</div><div><b>База</b><span class="api">base</span><p>Клетка (0, 0): старт и место эвакуации</p></div></div>
+    <div class="legend-tile"><div class="t door">🚪</div><div><b>Дверь пещеры</b><span class="api">door</span><p>Закрыта. Нужен пароль</p></div></div>
+    <div class="legend-tile"><div class="t fog" style="background:#070a17; outline:2px dashed #2b3561; outline-offset:-4px"></div><div><b>Край карты</b><span class="api">edge</span><p>Дальше ничего нет</p></div></div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">5</div>
+</section>
+
+<!-- 6. Пульт -->
+<section class="slide">
+  <div class="kicker">Пульт управления</div>
+  <h2>Пять запросов — и ты пилот</h2>
+  <table class="api">
+    <tr><td><span class="tag GET">GET</span>/rover/scan</td><td>📡 Где ровер и что на соседних клетках</td></tr>
+    <tr><td><span class="tag POST">POST</span>/rover/move</td><td>🛞 Проехать одну клетку. Тело: <span class="inl">{"dir": "north"}</span> — north, east, south или west</td></tr>
+    <tr><td><span class="tag POST">POST</span>/rover/home</td><td>🚚 Эвакуатор: вернуть ровер на базу. Находки остаются у тебя</td></tr>
+    <tr><td><span class="tag GET">GET</span>/rover/diary</td><td>📜 Страницы дневника, которые ты нашёл</td></tr>
+    <tr><td><span class="tag GET">GET</span>/rover/map</td><td>🗺️ Карта всего класса — <b class="mint">ключ не нужен</b></td></tr>
+  </table>
+  <div class="card edge" style="margin-top:8px"><p>Все запросы ровера — с <b class="gold">личным ключом</b> из урока 6: <span class="inl">headers = {"X-API-Key": key}</span>. Ключ лежит в <span class="inl">key.txt</span> — скопируй его в папку с заданиями.</p></div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">6</div>
+</section>
+
+<!-- 7. Сканер -->
+<section class="slide">
+  <div class="kicker">Первый запрос</div>
+  <h2>Сканер: что вокруг?</h2>
+  <div class="row" style="flex:1; align-items:flex-start">
+    <div class="col grow">
+<pre class="code"><span class="n">data</span> = requests.<span class="f">get</span>(BASE_URL + <span class="s">"/rover/scan"</span>,
+                    headers=headers).<span class="f">json</span>()
+<span class="f">print</span>(data[<span class="s">"x"</span>], data[<span class="s">"y"</span>], data[<span class="s">"around"</span>])</pre>
+<pre class="code json"><span class="b">{</span>
+  <span class="key">"x"</span>: <span class="num">0</span>, <span class="key">"y"</span>: <span class="num">0</span>,
+  <span class="key">"here"</span>: <span class="str">"base"</span>,
+  <span class="key">"around"</span>: <span class="b">{</span>
+    <span class="key">"north"</span>: <span class="str">"sand"</span>, <span class="key">"east"</span>: <span class="str">"sand"</span>,
+    <span class="key">"south"</span>: <span class="str">"edge"</span>, <span class="key">"west"</span>: <span class="str">"edge"</span>
+  <span class="b">}</span>,
+  <span class="key">"crystals"</span>: <span class="num">0</span>, <span class="key">"pages"</span>: <span class="num">0</span>, <span class="key">"crashes"</span>: <span class="num">0</span>
+<span class="b">}</span></pre>
+    </div>
+    <div class="col" style="width:300px; align-items:center; gap:14px">
+      <div id="g-scan"></div>
+      <p style="font-size:14px; color:#cfd5f2; line-height:1.4">Сканер видит <b>4 соседние клетки</b>: север, восток, юг и запад. <span class="inl">around</span> — это словарь. Первый же запрос ставит твой ровер на базу.</p>
+    </div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">7</div>
+</section>
+
+<!-- 8. Ехать -->
+<section class="slide">
+  <div class="kicker">Движение</div>
+  <h2>Шаг на одну клетку</h2>
+<pre class="code"><span class="k">def</span> <span class="f">move</span>(direction):
+    r = requests.<span class="f">post</span>(BASE_URL + <span class="s">"/rover/move"</span>, json={<span class="s">"dir"</span>: direction}, headers=headers)
+    <span class="k">return</span> r.<span class="f">json</span>()
+
+answer = <span class="f">move</span>(<span class="s">"north"</span>)
+<span class="f">print</span>(answer[<span class="s">"message"</span>])</pre>
+  <div class="row" style="margin-top:14px; gap:14px">
+    <div class="resp grow"><div class="lbl mint">✅ Проехал</div><span class="mono" style="font-size:12.5px">"moved": true, "x": 0, "y": 1</span><br>«Ровер на (0, 1): песок»</div>
+    <div class="resp grow"><div class="lbl coral">🧱 Упёрся</div><span class="mono" style="font-size:12.5px">"moved": false, "blocked_by": "rock"</span><br>«Впереди скала — дальше не проехать»</div>
+    <div class="resp grow"><div class="lbl gold">💎 Находка</div><span class="mono" style="font-size:12.5px">"found": "crystal"</span> или <span class="mono" style="font-size:12.5px">"page"</span><br>Страница приходит целиком: номер, текст, буква</div>
+  </div>
+  <p style="margin-top:12px; font-size:14px; color:var(--muted)">Ошибся в направлении (<span class="inl">"up"</span>) — сервер ответит <b>400</b> и подскажет, какие слова можно.</p>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">8</div>
+</section>
+
+<!-- 9. Правила -->
+<section class="slide">
+  <div class="kicker">Правила игры</div>
+  <h2>Что важно знать</h2>
+  <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px">
+    <div class="card"><div class="big-emoji">⏱️</div><h3 style="margin-top:8px">Ровер не спешит</h3><p>Одна клетка — четверть секунды. Ждёт сам сервер, <span class="inl">sleep</span> писать не нужно.</p></div>
+    <div class="card"><div class="big-emoji">🧱</div><h3 style="margin-top:8px">Стена — не беда</h3><p>Скала, дверь или край: <span class="inl">moved</span> = <span class="inl">False</span>, ровер стоит на месте.</p></div>
+    <div class="card" style="box-shadow: inset 0 0 0 2px #ff8a6566"><div class="big-emoji">🏜️</div><h3 style="margin-top:8px" class="coral">Зыбучий песок</h3><p>Авария: эвакуатор везёт ровер на базу, <span class="inl">crashes</span> +1. Но сканер песок видит!</p></div>
+    <div class="card"><div class="big-emoji">🎒</div><h3 style="margin-top:8px">Находки — твои</h3><p>Кристаллы и страницы у каждого свои. Сосед ничего у тебя не заберёт, а ты — у него.</p></div>
+    <div class="card"><div class="big-emoji">🚚</div><h3 style="margin-top:8px">Эвакуатор</h3><p><span class="inl">POST /rover/home</span> — на базу в любой момент. Находки остаются.</p></div>
+    <div class="card"><div class="big-emoji">☁️</div><h3 style="margin-top:8px">Туман общий</h3><p>Куда заглянул сканер любого ровера — клетка открыта для всего класса.</p></div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">9</div>
+</section>
+
+<!-- 10. Пример 1 -->
+<section class="slide">
+  <div class="kicker">Пример прохождения · лёгкое</div>
+  <h2>Доехать до точки (3, 5)</h2>
+  <div class="row" style="flex:1; align-items:flex-start">
+    <div class="col grow">
+      <p class="lead">Капитан пишет, что уронил первую страницу в клетке <b class="gold">(3, 5)</b>. Сколько раз ехать на восток? А на север?</p>
+<pre class="code"><span class="c"># эвакуатор: всегда стартуем с базы</span>
+requests.<span class="f">post</span>(BASE_URL + <span class="s">"/rover/home"</span>, headers=headers)
+<span class="k">for</span> _ <span class="k">in</span> <span class="f">range</span>(<span class="n">3</span>):
+    answer = <span class="f">move</span>(<span class="s">"east"</span>)
+<span class="k">for</span> _ <span class="k">in</span> <span class="f">range</span>(<span class="n">5</span>):
+    answer = <span class="f">move</span>(<span class="s">"north"</span>)
+
+<span class="k">if</span> answer.<span class="f">get</span>(<span class="s">"found"</span>) == <span class="s">"page"</span>:
+    page = answer[<span class="s">"page"</span>]
+    <span class="f">print</span>(page[<span class="s">"title"</span>], page[<span class="s">"letter"</span>])</pre>
+      <div class="card"><p>📜 Нашлась страница №1. Какая на ней буква — узнаешь, когда доедешь.</p></div>
+    </div>
+    <div id="g-target"></div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">10</div>
+</section>
+
+<!-- 11. Пример 2 -->
+<section class="slide">
+  <div class="kicker">Пример прохождения · среднее</div>
+  <h2>Ехать, пока едется</h2>
+  <p class="lead" style="margin-bottom:12px">Сколько клеток до скалы — неизвестно. Значит, <span class="inl">for</span> не подходит, нужен <span class="inl">while</span>: едем, пока сервер отвечает <span class="inl">moved: True</span>.</p>
+  <div class="row" style="align-items:flex-start">
+<pre class="code grow"><span class="n">crystals</span> = <span class="n">0</span>
+<span class="k">while</span> <span class="b">True</span>:
+    answer = <span class="f">move</span>(<span class="s">"east"</span>)
+    <span class="k">if</span> <span class="k">not</span> answer[<span class="s">"moved"</span>]:
+        <span class="k">break</span>                 <span class="c"># упёрлись</span>
+    <span class="k">if</span> answer.<span class="f">get</span>(<span class="s">"found"</span>) == <span class="s">"crystal"</span>:
+        crystals += <span class="n">1</span>
+
+<span class="f">print</span>(<span class="s">"Стоп на"</span>, answer[<span class="s">"x"</span>], answer[<span class="s">"y"</span>])
+<span class="f">print</span>(<span class="s">"Кристаллов:"</span>, crystals)</pre>
+    <div class="col" style="width:330px; gap:12px">
+      <div id="g-wall"></div>
+      <div class="card"><p>Пример: ровер проехал 5 клеток, подобрал 1 кристалл и упёрся в скалу. Сколько выйдет у тебя на востоке от базы?</p></div>
+      <div class="card"><p>🔁 Запусти ещё раз — кристаллов будет 0. Почему?</p></div>
+    </div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">11</div>
+</section>
+
+<!-- 12. Пример 3 -->
+<section class="slide">
+  <div class="kicker">Пример прохождения · среднее</div>
+  <h2>Смотри, прежде чем ехать</h2>
+  <div class="row" style="flex:1; align-items:flex-start">
+    <div class="col grow">
+<pre class="code"><span class="k">def</span> <span class="f">safe_move</span>(direction):
+    ahead = <span class="f">scan</span>()[<span class="s">"around"</span>][direction]
+    <span class="k">if</span> ahead <span class="k">in</span> (<span class="s">"trap"</span>, <span class="s">"rock"</span>, <span class="s">"edge"</span>, <span class="s">"door"</span>):
+        <span class="f">print</span>(<span class="s">"Впереди"</span>, ahead, <span class="s">"— стоп"</span>)
+        <span class="k">return</span> <span class="b">False</span>
+    <span class="f">move</span>(direction)
+    <span class="k">return</span> <span class="b">True</span>
+
+<span class="k">while</span> <span class="f">safe_move</span>(<span class="s">"north"</span>):
+    <span class="k">pass</span>     <span class="c"># цикл в одну строку!</span></pre>
+    </div>
+    <div class="col" style="width:330px; gap:10px">
+      <div class="resp" style="box-shadow: inset 0 0 0 2px #ff8a6588"><div class="lbl coral">💥 Без проверки</div>Ровер въезжает в зыбучий песок → эвакуатор → снова на базе. Авария засчитана.</div>
+      <div class="resp" style="box-shadow: inset 0 0 0 2px #6be3a088"><div class="lbl mint">🛡️ С проверкой</div>Сканер видит <span class="inl">trap</span> впереди — ровер останавливается за клетку до беды.</div>
+      <div id="g-trap" style="align-self:center; margin-top:4px"></div>
+    </div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">12</div>
+</section>
+
+<!-- 13. Дневник -->
+<section class="slide">
+  <div class="kicker">Дневник капитана</div>
+  <h2>Из страниц — в пароль</h2>
+  <p class="lead">Страницы приходят <b>в том порядке, в каком ты их нашёл</b>. А буквы складываются <b class="gold">по номерам страниц</b>.</p>
+  <div class="row" style="align-items:center; margin-top:18px; gap:12px">
+    <div class="col" style="align-items:center; gap:6px">
+      <div style="display:flex; gap:10px"><div class="pagecard" style="--r:-6deg"><small>стр.</small><span>7</span></div><div class="pagecard" style="--r:4deg"><small>стр.</small><span>2</span></div><div class="pagecard" style="--r:-2deg"><small>стр.</small><span>5</span></div></div>
+      <div style="font-size:13px; color:var(--muted)">как нашёл</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="col" style="align-items:center; gap:6px">
+      <div style="display:flex; gap:10px"><div class="pagecard"><small>стр.</small><span>2</span></div><div class="pagecard"><small>стр.</small><span>5</span></div><div class="pagecard"><small>стр.</small><span>7</span></div></div>
+      <div style="font-size:13px; color:var(--muted)"><span class="inl">sorted(..., key=...)</span></div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="col" style="gap:6px; align-items:center">
+      <div style="display:flex; gap:4px" id="letters"></div>
+      <div style="font-size:13px; color:var(--muted)">пароль: ★ — найденные буквы, ? — ещё нет</div>
+    </div>
+  </div>
+<pre class="code" style="margin-top:20px"><span class="n">pages</span> = <span class="f">sorted</span>(diary[<span class="s">"pages"</span>], key=<span class="k">lambda</span> page: page[<span class="s">"number"</span>])
+letters = {page[<span class="s">"number"</span>]: page[<span class="s">"letter"</span>] <span class="k">for</span> page <span class="k">in</span> diary[<span class="s">"pages"</span>]}
+password = <span class="s">""</span>.<span class="f">join</span>(letters.<span class="f">get</span>(n, <span class="s">"?"</span>) <span class="k">for</span> n <span class="k">in</span> <span class="f">range</span>(<span class="n">1</span>, <span class="n">11</span>))</pre>
+  <p style="margin-top:10px; font-size:14px; color:var(--muted)">💡 Не хватает пары букв? Слово можно угадать. Или спросить у соседа — делиться страницами можно.</p>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">13</div>
+</section>
+
+<!-- 14. Финал -->
+<section class="slide">
+  <div class="kicker">Финал</div>
+  <h2>Дверь пещеры</h2>
+  <div class="row" style="flex:1; align-items:flex-start">
+    <div class="col grow">
+      <p class="lead">Дверь видно сканером: <span class="inl">door</span>. Подъедь к ней <b>вплотную</b> и отправь пароль.</p>
+<pre class="code">r = requests.<span class="f">post</span>(BASE_URL + <span class="s">"/rover/door"</span>,
+                  json={<span class="s">"password"</span>: password},
+                  headers=headers)
+<span class="f">print</span>(r.status_code)</pre>
+      <div class="row" style="gap:10px">
+        <div class="resp grow"><div class="lbl violet">409</div>Ровер далеко. Подъедь ближе</div>
+        <div class="resp grow"><div class="lbl coral">403</div>Форма-27Б: «Не положено». Пароль неверный</div>
+        <div class="resp grow"><div class="lbl mint">200</div>Дверь открыта! 🎉</div>
+      </div>
+    </div>
+    <div class="col" style="width:300px; align-items:center; gap:12px">
+      <svg width="220" height="230" viewBox="0 0 220 230">
+        <path d="M10 225 L10 95 Q110 -10 210 95 L210 225 Z" fill="#5d4a3a"/>
+        <path d="M45 225 L45 110 Q110 40 175 110 L175 225 Z" fill="#2a1f17"/>
+        <rect x="62" y="100" width="96" height="125" rx="6" fill="#8a6e52" stroke="#4a3a2d" stroke-width="4"/>
+        <rect x="128" y="150" width="20" height="28" rx="4" fill="#2b3561"/>
+        <circle cx="138" cy="158" r="3" fill="#6be3a0"/><circle cx="138" cy="168" r="3" fill="#ff8a65"/>
+        <text x="110" y="135" text-anchor="middle" font-family="Bahnschrift" font-size="26" font-weight="700" fill="#ffd36b">?</text>
+      </svg>
+      <p style="font-size:14px; color:#cfd5f2; text-align:center">Что за дверью — секрет. Там же — <b class="gold">секретный код</b> для ачивки.</p>
+    </div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">14</div>
+</section>
+
+<!-- 15. Обход всей карты -->
+<section class="slide">
+  <div class="kicker">Босс-уровень</div>
+  <h2>Объехать всю планету</h2>
+  <div class="row" style="flex:1; align-items:flex-start">
+    <div class="col grow" style="gap:10px">
+      <p class="lead">Программа, которая сама исследует каждую клетку. Идея — <b class="gold">поиск в глубину</b>:</p>
+      <div class="step"><div class="n" style="flex-basis:36px; height:36px; font-size:19px">1</div><p class="lead" style="font-size:16px">Стою на клетке и смотрю сканером по сторонам.</p></div>
+      <div class="step"><div class="n" style="flex-basis:36px; height:36px; font-size:19px">2</div><p class="lead" style="font-size:16px">Вижу новую безопасную клетку — заезжаю туда.</p></div>
+      <div class="step"><div class="n" style="flex-basis:36px; height:36px; font-size:19px">3</div><p class="lead" style="font-size:16px">Исследую её <b>точно так же</b> — функция вызывает сама себя.</p></div>
+      <div class="step"><div class="n" style="flex-basis:36px; height:36px; font-size:19px">4</div><p class="lead" style="font-size:16px">Возвращаюсь назад и смотрю следующую сторону.</p></div>
+    </div>
+<pre class="code" style="width:380px; font-size:12px; line-height:1.38; padding:10px 14px"><span class="n">visited</span> = <span class="f">set</span>()
+
+<span class="k">def</span> <span class="f">explore</span>(x, y):
+    visited.<span class="f">add</span>((x, y))
+    around = <span class="f">scan</span>()[<span class="s">"around"</span>]
+    <span class="k">for</span> d, (dx, dy) <span class="k">in</span> STEP.<span class="f">items</span>():
+        new = (x + dx, y + dy)
+        <span class="k">if</span> new <span class="k">in</span> visited:
+            <span class="k">continue</span>
+        <span class="k">if</span> around[d] <span class="k">in</span> STOP:
+            <span class="k">continue</span>
+        <span class="f">move</span>(d)
+        <span class="f">explore</span>(*new)   <span class="c"># рекурсия!</span>
+        <span class="f">move</span>(BACK[d])   <span class="c"># назад</span></pre>
+  </div>
+  <div class="card edge" style="margin-top:6px"><p>Обход идёт пару минут — включайте проектор и смотрите, как туман исчезает. Награда — ачивка <b class="gold">🛰️ Первопроходец</b>.</p></div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">15</div>
+</section>
+
+<!-- 16. Задания -->
+<section class="slide">
+  <div class="kicker">Задания</div>
+  <h2>От простого к сложному</h2>
+  <div class="row" style="gap:16px">
+    <div class="level grow" style="box-shadow: inset 0 3px 0 var(--mint)"><h3>🟢 Лёгкие</h3><ul>
+      <li><b>1. На связи</b><br><span>сканер и перевод на русский</span></li>
+      <li><b>2. Точка (3, 5)</b><br><span>циклы for, первая страница</span></li>
+      <li><b>3. Пульт управления</b><br><span>w a s d — рули с клавиатуры</span></li></ul></div>
+    <div class="level grow" style="box-shadow: inset 0 3px 0 var(--gold)"><h3>🟡 Средние</h3><ul>
+      <li><b>4. До упора</b><br><span>while и moved</span></li>
+      <li><b>5. Осторожно, зыбучий песок</b><br><span>функция safe_move</span></li>
+      <li><b>6. Дневник капитана</b><br><span>sorted и пароль из букв</span></li>
+      <li><b>7. Карта класса</b><br><span>рисуем общую карту</span></li></ul></div>
+    <div class="level grow" style="box-shadow: inset 0 3px 0 var(--coral)"><h3>🔴 Посложнее</h3><ul>
+      <li><b>8. Обход всей карты</b><br><span>рекурсия и поиск в глубину</span></li>
+      <li><b>9. Капитан, мы идём!</b><br><span>финал: пароль и дверь</span></li></ul>
+      <div style="margin-top:14px; font-size:13px; color:var(--muted)">Подробно — в файле <span class="inl">EXERCISES.md</span>. Там подсказки, а не готовый код.</div></div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">16</div>
+</section>
+
+<!-- 17. Проектор и ачивки -->
+<section class="slide">
+  <div class="kicker">Вместе с классом</div>
+  <h2>Проектор и ачивки</h2>
+  <div class="row" style="align-items:flex-start">
+    <div class="col grow" style="gap:10px">
+      <div class="card" style="padding:12px 14px">
+        <div style="display:flex; gap:16px; align-items:center; font-size:14px; flex-wrap:wrap">
+          <span>🗺️ Карта <b class="gold">63%</b></span>
+          <span style="flex:0 0 110px; height:10px; border-radius:5px; background:#2b3561; overflow:hidden"><span style="display:block; width:63%; height:100%; background:linear-gradient(90deg,#6be3a0,#ffd36b)"></span></span>
+          <span style="display:flex; gap:3px; align-items:center">📜&nbsp;<span id="proj-pages" style="display:flex; gap:3px"></span></span>
+        </div>
+        <div id="g-proj" style="margin-top:10px"></div>
+      </div>
+      <p style="font-size:14px; color:#cfd5f2">На проекторе <span class="inl">/rover.html</span> видно все роверы вживую, общий прогресс и кто первым нашёл каждую страницу.</p>
+    </div>
+    <div class="col" style="width:330px; gap:9px">
+      <div class="ach"><span class="i">🏜️</span><div><b>Зыбучий песок</b><p>Провалиться в ловушку. Бывает!</p></div></div>
+      <div class="ach"><span class="i">🛰️</span><div><b>Первопроходец</b><p>Побывать на каждой клетке</p></div></div>
+      <div class="ach"><span class="i">📖</span><div><b>Летописец</b><p>Собрать все 10 страниц</p></div></div>
+      <div class="ach" style="box-shadow: inset 0 0 0 2px var(--gold)"><span class="i">🧑‍🚀</span><div><b class="gold">Капитан найден</b><p>Открыть дверь пещеры</p></div></div>
+    </div>
+  </div>
+  <div class="foot">Космопорт · Ровер на Барханье</div><div class="num">17</div>
+</section>
+
+<!-- 18. Старт -->
+<section class="slide">
+  <svg style="position:absolute; right:40px; bottom:40px" width="300" height="240" viewBox="0 0 300 240">
+    <path d="M0 200 C60 170 120 210 180 185 S270 170 300 180 L300 240 L0 240 Z" fill="#c9a46a" opacity=".9"/>
+    <path d="M0 220 C80 200 150 235 220 212 S290 205 300 210 L300 240 L0 240 Z" fill="#b38a50"/>
+    <use href="#rover" x="70" y="90" width="150" height="120"/>
+  </svg>
+  <div class="kicker">Поехали</div>
+  <h2>Честная игра и первый шаг</h2>
+  <div class="col" style="max-width:560px; gap:10px">
+    <div class="card" style="display:flex; gap:12px; align-items:center"><span class="big-emoji">🤝</span><p><b class="mint">Можно:</b> делиться идеями, страницами и буквами, помогать соседу, подсматривать на проектор.</p></div>
+    <div class="card" style="display:flex; gap:12px; align-items:center"><span class="big-emoji">🙅</span><p><b class="coral">Не надо:</b> регистрировать кучу игроков и запускать циклы, которые никогда не кончаются. Остановить программу — красный квадрат в PyCharm.</p></div>
+    <div class="card edge"><p><b class="gold">Первый шаг:</b> скопируй <span class="inl">key.txt</span> из урока 6 → открой <span class="inl">EXERCISES.md</span> → задание 1: <span class="inl">GET /rover/scan</span>. Найди свой ровер на проекторе!</p></div>
+  </div>
+  <h1 style="font-size:44px; margin-top:auto">Капитан ждёт. <span class="gold">Поехали!</span> 🛞</h1>
+  <div class="foot" style="bottom:12px">Космопорт · Ровер на Барханье</div>
+</section>
+
+<script>
+  // Клеточные карты на слайдах. Строки — сверху вниз (север сверху).
+  //  . песок  # скала  ~ зыбучий песок  * кристалл  P страница  B база  D дверь  ? туман  R ровер
+  //  o след ровера  T цель (золотая рамка)  ! опасность (красная рамка)
+  const KIND = { ".": "sand", "#": "rock", "~": "trap", "*": "sand", "P": "sand", "B": "sand", "D": "door",
+                 "?": "fog", "R": "sand", "o": "sand path", "T": "sand target", "!": "trap hot" };
+  const ICON = { "*": "💎", "P": "📜", "B": "🏠", "D": "🚪" };
+  const ROVER = '<svg viewBox="0 0 120 96"><use href="#rover"/></svg>';
+
+  function grid(id, rows, { size = 34, axes = false, extra = {} } = {}) {
+    const box = document.getElementById(id);
+    const h = rows.length, w = rows[0].length;
+    const g = document.createElement("div");
+    g.className = "grid";
+    g.style.setProperty("--c", size + "px");
+    g.style.gridTemplateColumns = (axes ? "18px " : "") + `repeat(${w}, ${size}px)`;
+    rows.forEach((line, r) => {
+      if (axes) { const a = document.createElement("div"); a.className = "ax"; a.textContent = h - 1 - r; g.append(a); }
+      [...line].forEach((ch, x) => {
+        const t = document.createElement("div");
+        t.className = "t " + (KIND[ch] || "sand");
+        if (ICON[ch]) t.textContent = ICON[ch];
+        if (ch === "R") t.innerHTML = ROVER;
+        const key = x + "," + (h - 1 - r);
+        if (extra[key]) t.innerHTML = extra[key];
+        g.append(t);
+      });
+    });
+    if (axes) {
+      g.append(Object.assign(document.createElement("div"), { className: "ax" }));
+      for (let x = 0; x < w; x++) { const a = document.createElement("div"); a.className = "ax"; a.style.height = "16px"; a.textContent = x; g.append(a); }
+    }
+    box.append(g);
+  }
+
+  const star = '<span style="color:#ffd36b; font-size:20px">★</span>';
+  // 4. координаты: база, цель (3, 5), туман
+  grid("g-coords", [
+    "????????",
+    "???T????",
+    "????????",
+    "????????",
+    "????????",
+    "????????",
+    "R???????",
+  ], { size: 40, axes: true, extra: { "3,5": '<span style="font-family:Bahnschrift;font-weight:700;color:#3a2a00;font-size:12px">(3, 5)</span>' } });
+
+  // 7. сканер: ровер и 4 соседние клетки
+  grid("g-scan", [
+    "?.?",
+    "?R.",
+    "???",
+  ], { size: 62, extra: { "0,1": "", "0,0": "" } });
+  // за краем карты — пусто
+  document.querySelectorAll("#g-scan .t").forEach((t, i) => {
+    if (i === 3 || i === 7) { t.className = "t"; t.style.background = "#070a17"; t.style.outline = "2px dashed #2b3561"; t.style.outlineOffset = "-5px"; t.textContent = ""; }
+    if (i === 0 || i === 2 || i === 6 || i === 8) { t.style.opacity = ".35"; }
+  });
+
+  // 10. путь до (3, 5): 3 на восток, 5 на север
+  grid("g-target", [
+    "????????",
+    "???P????",
+    "???o????",
+    "???o????",
+    "???o????",
+    "???o????",
+    "Booo????",
+  ], { size: 38, axes: true });
+  document.querySelectorAll("#g-target .t")[3 + 1 * 8].classList.add("target");
+
+  // 11. до упора (пример, не настоящая карта)
+  grid("g-wall", ["Boo*oR#"], { size: 40 });
+
+  // 12. ловушка впереди
+  grid("g-trap", ["!", ".", "R", "o"], { size: 44 });
+
+  // 13. пароль: найдены страницы 2, 5, 7
+  const letters = document.getElementById("letters");
+  for (let n = 1; n <= 10; n++) {
+    const d = document.createElement("div");
+    const found = [2, 5, 7].includes(n);
+    d.className = "letter" + (found ? "" : " q");
+    d.textContent = found ? "★" : "?";
+    letters.append(d);
+  }
+
+  // 17. мини-проектор (выдуманная карта с туманом)
+  grid("g-proj", [
+    "????????????",
+    "??..#.??????",
+    "?.#...~.????",
+    ".*..#..P.???",
+    "..#...#..#??",
+    "B...*...????",
+  ], { size: 24, extra: { "3,4": ROVER, "8,2": ROVER, "1,0": ROVER } });
+  const pp = document.getElementById("proj-pages");
+  for (let n = 1; n <= 10; n++) {
+    const s = document.createElement("span");
+    s.textContent = n;
+    s.style.cssText = "width:18px;height:18px;border-radius:4px;display:grid;place-items:center;font-size:10px;font-weight:700;" +
+      ([1, 3, 4, 6].includes(n) ? "background:#ffd36b;color:#3a2a00" : "background:#2b3561;color:#9aa3c7");
+    pp.append(s);
+  }
+</script>
+</body>
+</html>
